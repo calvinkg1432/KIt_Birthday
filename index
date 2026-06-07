@@ -19,9 +19,11 @@
             --card-max-height: 550px;
         }
 
-        body {
+        html, body {
             margin: 0;
             padding: 0;
+            width: 100%;
+            height: 100%;
             background-color: #f0f4f8;
             background-image: 
                 linear-gradient(#e0e7ee 1px, transparent 1px),
@@ -31,7 +33,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
             overflow: hidden; 
             touch-action: none; 
         }
@@ -57,6 +58,9 @@
             -webkit-transition: -webkit-transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            /* 修復部分手機渲染異常 */
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
         }
 
         .card.is-open {
@@ -73,6 +77,9 @@
             border-radius: 15px;
             overflow: hidden;
             background-color: #fff;
+            /* [重要修復] 強制 iOS Safari 開啟硬體加速，防止白畫面 */
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
         }
 
         /* 封面 */
@@ -86,6 +93,9 @@
             z-index: 2;
             border: 2px solid #fff;
             position: relative;
+            /* 確保正面在 3D 空間的最前方 */
+            -webkit-transform: rotateY(0deg) translateZ(1px);
+            transform: rotateY(0deg) translateZ(1px);
         }
 
         .math-doodles {
@@ -171,8 +181,8 @@
         /* 內頁：轉盤 */
         .card-back {
             background-color: #fafafa;
-            transform: rotateY(180deg);
-            -webkit-transform: rotateY(180deg);
+            transform: rotateY(180deg) translateZ(1px);
+            -webkit-transform: rotateY(180deg) translateZ(1px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -378,7 +388,6 @@
 
     <div class="scene">
         <div class="card" id="myCard">
-            <!-- 封面 -->
             <div class="card-face card-front" onclick="openCard()">
                 <div class="math-doodles">
                     <span class="m1">∫</span><span class="m2">∑</span>
@@ -389,16 +398,13 @@
                     <div class="gemini-symbol">♊</div>
                     <div class="cover-title">
                         生日快樂！<br>
-                        <!-- ===== 稱呼修改處 ===== -->
-                        <span class="custom-name">親愛的鄺老師</span>
-                        <!-- ===================== -->
-                    </div>
+                        <span class="custom-name">親愛的 [請在這裡輸入對方的稱呼]</span>
+                        </div>
                     <div style="color: #666; font-size: 13px; margin-top: 10px;">(教育系專屬・互動賀卡)</div>
                     <div class="open-hint">👆 點擊開啟卡片</div>
                 </div>
             </div>
 
-            <!-- 內頁：命運轉盤 -->
             <div class="card-face card-back">
                 <div class="inner-title">教育系命運轉盤 🎯</div>
                 <div class="inner-subtitle">點擊下方按鈕，抽取專屬好運！</div>
@@ -430,7 +436,6 @@
         </div>
     </div>
 
-    <!-- 過場動畫：黑板小短片 -->
     <div class="video-modal" id="videoModal">
         <div class="blackboard">
             <div class="video-content">
