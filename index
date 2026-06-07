@@ -13,17 +13,13 @@
             --blackboard-bg: #2c5e43; 
             --chalk-white: #f5f5f5;
             --wood-color: #8b5a2b; 
-            --card-width: 90vw;
-            --card-max-width: 400px;
-            --card-height: 80vh; 
-            --card-max-height: 550px;
         }
 
         html, body {
             margin: 0;
             padding: 0;
             width: 100%;
-            height: 100%;
+            min-height: 100vh;
             background-color: #f0f4f8;
             background-image: 
                 linear-gradient(#e0e7ee 1px, transparent 1px),
@@ -34,18 +30,17 @@
             justify-content: center;
             align-items: center;
             overflow: hidden; 
-            touch-action: none; 
+            touch-action: manipulation; 
         }
 
+        /* 穩定版 3D 容器 */
         .scene {
-            width: var(--card-width);
-            max-width: var(--card-max-width);
-            height: var(--card-height);
-            max-height: var(--card-max-height);
-            perspective: 2000px;
-            -webkit-perspective: 2000px;
+            width: 90vw;
+            max-width: 400px;
+            height: 520px; /* 固定高度，防止 iOS 亂縮放 */
+            perspective: 1500px;
+            -webkit-perspective: 1500px;
             position: relative;
-            z-index: 10;
         }
 
         .card {
@@ -54,22 +49,23 @@
             position: relative;
             transform-style: preserve-3d;
             -webkit-transform-style: preserve-3d;
-            transition: transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            -webkit-transition: -webkit-transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 1s ease-in-out;
+            -webkit-transition: -webkit-transform 1s ease-in-out;
             border-radius: 15px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-            /* 修復部分手機渲染異常 */
-            transform: translateZ(0);
-            -webkit-transform: translateZ(0);
         }
 
+        /* 翻開狀態 */
         .card.is-open {
-            transform: rotateY(-180deg);
-            -webkit-transform: rotateY(-180deg);
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
         }
 
+        /* 卡片正反面共用設定 */
         .card-face {
             position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
@@ -77,12 +73,9 @@
             border-radius: 15px;
             overflow: hidden;
             background-color: #fff;
-            /* [重要修復] 強制 iOS Safari 開啟硬體加速，防止白畫面 */
-            -webkit-transform: translate3d(0, 0, 0);
-            transform: translate3d(0, 0, 0);
         }
 
-        /* 封面 */
+        /* --- 封面設定 --- */
         .card-front {
             background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
             display: flex;
@@ -91,17 +84,15 @@
             align-items: center;
             cursor: pointer;
             z-index: 2;
+            transform: rotateY(0deg);
+            -webkit-transform: rotateY(0deg);
             border: 2px solid #fff;
-            position: relative;
-            /* 確保正面在 3D 空間的最前方 */
-            -webkit-transform: rotateY(0deg) translateZ(1px);
-            transform: rotateY(0deg) translateZ(1px);
+            box-sizing: border-box;
         }
 
         .math-doodles {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             opacity: 0.15;
             font-size: 24px;
             font-weight: bold;
@@ -120,11 +111,10 @@
             border-radius: 20px;
             text-align: center;
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
             border: 1px dashed #ccc;
             width: 80%;
             box-sizing: border-box;
+            z-index: 10;
         }
 
         .date-badge {
@@ -178,11 +168,11 @@
             100% { opacity: 1; }
         }
 
-        /* 內頁：轉盤 */
+        /* --- 內頁（背面）設定 --- */
         .card-back {
             background-color: #fafafa;
-            transform: rotateY(180deg) translateZ(1px);
-            -webkit-transform: rotateY(180deg) translateZ(1px);
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -241,7 +231,6 @@
             border-right: 15px solid transparent;
             border-top: 25px solid #e74c3c;
             z-index: 10;
-            filter: drop-shadow(0 3px 3px rgba(0,0,0,0.3));
         }
 
         .spin-btn {
@@ -255,18 +244,14 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4);
             margin-top: 25px;
-            touch-action: manipulation;
         }
         
         .spin-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none;}
 
-        /* 黑板動畫 */
+        /* --- 黑板動畫 --- */
         .video-modal {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
             z-index: 100;
             display: flex;
@@ -274,8 +259,8 @@
             align-items: center;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 1s ease-in-out;
-            -webkit-transition: opacity 1s ease-in-out;
+            transition: opacity 0.5s;
+            -webkit-transition: opacity 0.5s;
             padding: 15px;
             box-sizing: border-box;
         }
@@ -292,7 +277,7 @@
             background-color: var(--blackboard-bg);
             border: 10px solid var(--wood-color);
             border-radius: 8px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
             position: relative;
             padding: 15px;
             box-sizing: border-box;
@@ -300,8 +285,8 @@
             flex-direction: column;
             transform: scale(0.8);
             -webkit-transform: scale(0.8);
-            transition: transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            -webkit-transition: -webkit-transform 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
         }
 
         .video-modal.active .blackboard {
@@ -322,25 +307,18 @@
             font-size: 35px;
             margin-bottom: 10px;
             opacity: 0;
-            transform: translateY(20px);
-            -webkit-transform: translateY(20px);
-            transition: all 0.5s ease;
-            -webkit-transition: all 0.5s ease;
         }
 
         .video-modal.active .chalk-icon {
             opacity: 1;
-            transform: translateY(0);
-            -webkit-transform: translateY(0);
-            transition-delay: 0.5s;
+            transition: opacity 0.5s 0.5s;
+            -webkit-transition: opacity 0.5s 0.5s;
         }
 
         .chalk-text {
             font-size: 16px;
             line-height: 1.6;
             text-align: center;
-            font-family: 'Noto Sans TC', sans-serif;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
             min-height: 80px; 
         }
 
@@ -357,26 +335,21 @@
             border-radius: 20px;
             cursor: pointer;
             font-size: 14px;
-            touch-action: manipulation;
             white-space: nowrap;
         }
 
         .eraser-deco {
             position: absolute;
-            bottom: 5px;
-            right: 15px;
-            width: 35px;
-            height: 12px;
+            bottom: 5px; right: 15px;
+            width: 35px; height: 12px;
             background: #e67e22;
             border-top: 4px solid #bdc3c7;
         }
 
         .chalk-deco {
             position: absolute;
-            bottom: 8px;
-            right: 60px;
-            width: 20px;
-            height: 5px;
+            bottom: 8px; right: 60px;
+            width: 20px; height: 5px;
             background: #fff;
             border-radius: 3px;
             transform: rotate(-15deg);
@@ -398,7 +371,7 @@
                     <div class="gemini-symbol">♊</div>
                     <div class="cover-title">
                         生日快樂！<br>
-                        <span class="custom-name">親愛的 [請在這裡輸入對方的稱呼]</span>
+                        <span class="custom-name">親愛的家人</span>
                         </div>
                     <div style="color: #666; font-size: 13px; margin-top: 10px;">(教育系專屬・互動賀卡)</div>
                     <div class="open-hint">👆 點擊開啟卡片</div>
@@ -496,12 +469,11 @@
         function playVideo(scenarioData) {
             videoIcon.innerText = scenarioData.icon;
             chalkText.innerHTML = ""; 
-            
             videoModal.classList.add('active');
 
             setTimeout(() => {
                 typeWriterEffect(scenarioData.text);
-            }, 1000);
+            }, 800);
         }
 
         function typeWriterEffect(text) {
@@ -523,7 +495,6 @@
             isSpinning = false;
             spinBtn.disabled = false;
             spinBtn.innerText = "↻ 旋轉抽取祝福！";
-            
             if (typeWriterInterval) clearInterval(typeWriterInterval);
             chalkText.innerHTML = "";
         }
