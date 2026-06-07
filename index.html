@@ -490,10 +490,20 @@ const scenarios = [
             if (isSpinning) return;
             isSpinning = true;
             spinBtn.disabled = true;
-            spinBtn.innerText = "祈求好運中...";
+            spinBtn.innerText = "大抽獎...";
 
-            const randomDegree = Math.floor(Math.random() * 360);
-            currentRotation += 1800 + randomDegree; 
+            // 1. 先隨機決定要中哪一格 (0 到 9)
+            const winningIndex = Math.floor(Math.random() * 11); 
+
+            // 2. 算出那一格的正中間是幾度 (每格36度，正中間就是 18度)
+            // 這裡用 360 減去角度，是為了配合您後面的 pointerDegree 逆向計算邏輯
+            const targetDegree = 360 - (winningIndex * 36 + 18); 
+
+            // 3. 計算這次要轉的度數 (1800度是轉5圈的基本盤)
+            currentRotation += 1800 + targetDegree - (currentRotation % 360);
+
+            // const randomDegree = Math.floor(Math.random() * 360);
+            // currentRotation += 1800 + randomDegree; 
             
             wheel.style.transform = `rotate(${currentRotation}deg)`;
             wheel.style.webkitTransform = `rotate(${currentRotation}deg)`;
