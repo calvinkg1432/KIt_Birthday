@@ -83,4 +83,430 @@
             z-index: 2;
             transform: rotateY(0deg);
             -webkit-transform: rotateY(0deg);
-            border:
+            border: 2px solid #fff;
+            box-sizing: border-box;
+        }
+
+        .math-doodles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.15;
+            font-size: 24px;
+            font-weight: bold;
+            pointer-events: none;
+        }
+        .math-doodles span { position: absolute; color: #000; }
+        .m1 { top: 10%; left: 10%; transform: rotate(-15deg); }
+        .m2 { top: 20%; right: 15%; transform: rotate(20deg); }
+        .m3 { bottom: 15%; left: 20%; transform: rotate(10deg); font-size: 30px;}
+        .m4 { bottom: 25%; right: 10%; transform: rotate(-25deg); }
+        .m5 { top: 50%; left: 5%; transform: rotate(45deg); font-size: 35px;}
+
+        .cover-content {
+            background: rgba(255, 255, 255, 0.85);
+            padding: 25px 20px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 1px dashed #ccc;
+            width: 80%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .date-badge {
+            background: #ff6b6b;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .cover-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .custom-name {
+            color: #e74c3c;
+            border-bottom: 2px dashed #e74c3c;
+            padding-bottom: 2px;
+        }
+
+        .gemini-symbol {
+            font-size: 40px;
+            color: var(--primary-color);
+            margin: 10px 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .open-hint {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            font-weight: bold;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* 內頁：轉盤 */
+        .card-back {
+            background-color: #fafafa;
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 10px;
+            box-sizing: border-box;
+            border: 2px solid #ddd;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 29px, #e8e8e8 30px);
+        }
+
+        .inner-title {
+            color: #34495e;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-align: center;
+            background: #fff;
+            padding: 5px 15px;
+            border-radius: 10px;
+        }
+
+        .inner-subtitle {
+            font-size: 13px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 240px; 
+            height: 240px;
+            margin: 0 auto;
+        }
+
+        .wheel-svg {
+            width: 100%;
+            height: 100%;
+            transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            -webkit-transition: -webkit-transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+            transform-origin: center;
+            -webkit-transform-origin: center;
+            border-radius: 50%;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 15px solid transparent;
+            border-right: 15px solid transparent;
+            border-top: 25px solid #e74c3c;
+            z-index: 10;
+        }
+
+        .spin-btn {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(243, 156, 18, 0.4);
+            margin-top: 25px;
+        }
+        
+        .spin-btn:disabled { background: #ccc; cursor: not-allowed; box-shadow: none;}
+
+        /* 黑板動畫 */
+        .video-modal {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            -webkit-transition: opacity 0.5s;
+            padding: 15px;
+            box-sizing: border-box;
+        }
+
+        .video-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .blackboard {
+            width: 100%;
+            max-width: 360px;
+            height: 260px;
+            background-color: var(--blackboard-bg);
+            border: 10px solid var(--wood-color);
+            border-radius: 8px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            position: relative;
+            padding: 15px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            transform: scale(0.8);
+            -webkit-transform: scale(0.8);
+            transition: transform 0.5s;
+            -webkit-transition: -webkit-transform 0.5s;
+        }
+
+        .video-modal.active .blackboard {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+
+        .video-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: var(--chalk-white);
+        }
+
+        .chalk-icon {
+            font-size: 35px;
+            margin-bottom: 10px;
+            opacity: 0;
+        }
+
+        .video-modal.active .chalk-icon {
+            opacity: 1;
+            transition: opacity 0.5s 0.5s;
+            -webkit-transition: opacity 0.5s 0.5s;
+        }
+
+        .chalk-text {
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: center;
+            min-height: 80px; 
+        }
+
+        .close-video-btn {
+            position: absolute;
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            -webkit-transform: translateX(-50%);
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            padding: 8px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .eraser-deco {
+            position: absolute;
+            bottom: 5px; right: 15px;
+            width: 35px; height: 12px;
+            background: #e67e22;
+            border-top: 4px solid #bdc3c7;
+        }
+
+        .chalk-deco {
+            position: absolute;
+            bottom: 8px; right: 60px;
+            width: 20px; height: 5px;
+            background: #fff;
+            border-radius: 3px;
+            transform: rotate(-15deg);
+            -webkit-transform: rotate(-15deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="scene">
+        <div class="card" id="myCard">
+            <div class="card-face card-front" onclick="openCard()">
+                <div class="math-doodles">
+                    <span class="m1">∫</span><span class="m2">∑</span>
+                    <span class="m3">∞</span><span class="m4">π</span><span class="m5">θ</span>
+                </div>
+                <div class="cover-content">
+                    <div class="date-badge">June 7th ♊</div>
+                    <div class="gemini-symbol">♊</div>
+                    <div class="cover-title">
+                        生日快樂！<br>
+                        <span class="custom-name">親愛的家人</span>
+                        </div>
+                    <div style="color: #666; font-size: 13px; margin-top: 10px;">(教育系專屬・互動賀卡)</div>
+                    <div class="open-hint">👆 點擊開啟卡片</div>
+                </div>
+            </div>
+
+            <div class="card-face card-back">
+                <div class="inner-title">教育系命運轉盤 🎯</div>
+                <div class="inner-subtitle">點擊下方按鈕，抽取專屬好運！</div>
+                
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <svg class="wheel-svg" id="wheel" viewBox="0 0 200 200">
+                        <g transform="translate(100, 100)">
+                            <g transform="rotate(30)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#FFB7B2" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">📐 幾何</text>
+                            </g>
+                            <g transform="rotate(90)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#E2F0CB" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">💯 滿分</text>
+                            </g>
+                            <g transform="rotate(150)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#B5EAD7" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">∞ 無限</text>
+                            </g>
+                            <g transform="rotate(210)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#C7CEEA" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">🌟 講台</text>
+                            </g>
+                            <g transform="rotate(270)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#FFDAC1" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">🔔 下班</text>
+                            </g>
+                            <g transform="rotate(330)">
+                                <path d="M0,0 L-50,-86.603 A100,100 0 0,1 50,-86.603 Z" fill="#FF9AA2" />
+                                <text x="0" y="-65" text-anchor="middle" font-size="12" font-weight="bold" fill="#333">✏️ 粉筆</text>
+                            </g>
+                            <circle cx="0" cy="0" r="15" fill="#fff" stroke="#ccc" stroke-width="2"/>
+                            <circle cx="0" cy="0" r="5" fill="#e74c3c"/>
+                        </g>
+                    </svg>
+                </div>
+                
+                <button class="spin-btn" id="spinBtn" onclick="spinWheel()">↻ 旋轉抽取祝福！</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="video-modal" id="videoModal">
+        <div class="blackboard">
+            <div class="video-content">
+                <div class="chalk-icon" id="videoIcon">🎬</div>
+                <div class="chalk-text" id="chalkText"></div>
+            </div>
+            <div class="eraser-deco"></div>
+            <div class="chalk-deco"></div>
+            <button class="close-video-btn" onclick="closeVideo()">✖ 關閉並再轉一次</button>
+        </div>
+    </div>
+
+    <script>
+        function openCard() {
+            document.getElementById('myCard').classList.add('is-open');
+        }
+
+        const wheel = document.getElementById('wheel');
+        const spinBtn = document.getElementById('spinBtn');
+        const videoModal = document.getElementById('videoModal');
+        const videoIcon = document.getElementById('videoIcon');
+        const chalkText = document.getElementById('chalkText');
+
+        let currentRotation = 0;
+        let isSpinning = false;
+        let typeWriterInterval = null;
+
+        const scenarios = [
+            { name: "幾何", icon: "📐", text: "用圓規畫出最圓滿的一年！願你的快樂跟著歲數成「幾何級數」快速增長！生日快樂！" },
+            { name: "滿分", icon: "💯", text: "學生乖巧不搗蛋，考卷通通拿高分！祝你無論在教學還是生活中，天天都過得100分！" },
+            { name: "無限", icon: "♾️", text: "把黑板上的微積分化作祝福：送你一個「無限大 (∞)」的幸運符號，平安健康永不收斂！" },
+            { name: "講台", icon: "🌟", text: "站在人生的講台上，你永遠是最閃耀的主角！我們永遠是你最忠實的學生兼啦啦隊！" },
+            { name: "下班", icon: "🔔", text: "噹噹噹！下課鐘聲響起！今天請馬上忘掉備課煩惱，準時下班去吃生日大餐吧！" },
+            { name: "粉筆", icon: "✏️", text: "不管粉筆灰掉多少，你的智慧光芒不減！用多彩的粉筆，為你寫下最誠摯的：生日快樂！" }
+        ];
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            spinBtn.disabled = true;
+            spinBtn.innerText = "祈求好運中...";
+
+            const randomDegree = Math.floor(Math.random() * 360);
+            currentRotation += 1800 + randomDegree; 
+            
+            wheel.style.transform = `rotate(${currentRotation}deg)`;
+            wheel.style.webkitTransform = `rotate(${currentRotation}deg)`;
+
+            setTimeout(() => {
+                const actualDegree = currentRotation % 360;
+                const pointerDegree = (360 - actualDegree) % 360;
+                const index = Math.floor(pointerDegree / 60);
+                
+                playVideo(scenarios[index]);
+            }, 4000); 
+        }
+
+        function playVideo(scenarioData) {
+            videoIcon.innerText = scenarioData.icon;
+            chalkText.innerHTML = ""; 
+            videoModal.classList.add('active');
+
+            setTimeout(() => {
+                typeWriterEffect(scenarioData.text);
+            }, 800);
+        }
+
+        function typeWriterEffect(text) {
+            let i = 0;
+            if (typeWriterInterval) clearInterval(typeWriterInterval);
+
+            typeWriterInterval = setInterval(() => {
+                if (i < text.length) {
+                    chalkText.innerHTML += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeWriterInterval);
+                }
+            }, 80); 
+        }
+
+        function closeVideo() {
+            videoModal.classList.remove('active');
+            isSpinning = false;
+            spinBtn.disabled = false;
+            spinBtn.innerText = "↻ 旋轉抽取祝福！";
+            if (typeWriterInterval) clearInterval(typeWriterInterval);
+            chalkText.innerHTML = "";
+        }
+    </script>
+</body>
+</html>
